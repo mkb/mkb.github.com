@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: editors | mojinations]]></title>
-  <link href="http://mkb.github.com/blog/categories/editors/atom.xml" rel="self"/>
-  <link href="http://mkb.github.com/"/>
-  <updated>2012-06-25T18:48:12-07:00</updated>
-  <id>http://mkb.github.com/</id>
+  <link href="http://mojinations.com/blog/categories/editors/atom.xml" rel="self"/>
+  <link href="http://mojinations.com/"/>
+  <updated>2012-06-25T18:51:49-07:00</updated>
+  <id>http://mojinations.com/</id>
   <author>
     <name><![CDATA[mkb]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Callbacks in TextMate 2]]></title>
-    <link href="http://mkb.github.com/blog/2011/12/25/callbacks-in-textmate-2/"/>
+    <link href="http://mojinations.com/blog/2011/12/25/callbacks-in-textmate-2/"/>
     <updated>2011-12-25T12:52:00-08:00</updated>
-    <id>http://mkb.github.com/blog/2011/12/25/callbacks-in-textmate-2</id>
+    <id>http://mojinations.com/blog/2011/12/25/callbacks-in-textmate-2</id>
     <content type="html"><![CDATA[<p>The <a href="http://blog.macromates.com/2011/textmate-2-0-alpha/">TextMate 2 alpha</a> now supports callbacks in bundles. The callbacks are implemented as "semantic classes" in TextMate-speak. Our pal Alan shared a list of the new classes in a message to the TM mailing list which I have reproduced here:</p>
 
 <!--more-->

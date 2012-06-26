@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[mojinations]]></title>
-  <link href="http://mkb.github.com/atom.xml" rel="self"/>
-  <link href="http://mkb.github.com/"/>
-  <updated>2012-06-25T18:48:12-07:00</updated>
-  <id>http://mkb.github.com/</id>
+  <link href="http://mojinations.com/atom.xml" rel="self"/>
+  <link href="http://mojinations.com/"/>
+  <updated>2012-06-25T18:51:49-07:00</updated>
+  <id>http://mojinations.com/</id>
   <author>
     <name><![CDATA[mkb]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Node.js is badass rock star tech]]></title>
-    <link href="http://mkb.github.com/blog/2012/02/27/node-dot-js-is-badass-rock-star-tech/"/>
+    <link href="http://mojinations.com/blog/2012/02/27/node-dot-js-is-badass-rock-star-tech/"/>
     <updated>2012-02-27T16:14:00-08:00</updated>
-    <id>http://mkb.github.com/blog/2012/02/27/node-dot-js-is-badass-rock-star-tech</id>
+    <id>http://mojinations.com/blog/2012/02/27/node-dot-js-is-badass-rock-star-tech</id>
     <content type="html"><![CDATA[<iframe width="560" height="315" src="http://www.youtube.com/embed/bzkRVzciAZg?rel=0" frameborder="0" allowfullscreen></iframe>
 
 ]]></content>
@@ -25,9 +25,9 @@
   
   <entry>
     <title type="html"><![CDATA[Instrumenting excon]]></title>
-    <link href="http://mkb.github.com/blog/2012/01/30/instrumenting-excon/"/>
+    <link href="http://mojinations.com/blog/2012/01/30/instrumenting-excon/"/>
     <updated>2012-01-30T16:12:00-08:00</updated>
-    <id>http://mkb.github.com/blog/2012/01/30/instrumenting-excon</id>
+    <id>http://mojinations.com/blog/2012/01/30/instrumenting-excon</id>
     <content type="html"><![CDATA[<p>At Engine Yard we make heavy use of <a href="https://github.com/fog/fog">fog</a> to interface with back-end cloud providers.  Fog in turn uses <a href="https://github.com/geemus/excon">excon</a> to make HTTP requests.  A few features make excon a better choice than Net::HTTP:</p>
 
 <ul>
@@ -107,9 +107,9 @@ end</code></pre></noscript></div>
   
   <entry>
     <title type="html"><![CDATA[Callbacks in TextMate 2]]></title>
-    <link href="http://mkb.github.com/blog/2011/12/25/callbacks-in-textmate-2/"/>
+    <link href="http://mojinations.com/blog/2011/12/25/callbacks-in-textmate-2/"/>
     <updated>2011-12-25T12:52:00-08:00</updated>
-    <id>http://mkb.github.com/blog/2011/12/25/callbacks-in-textmate-2</id>
+    <id>http://mojinations.com/blog/2011/12/25/callbacks-in-textmate-2</id>
     <content type="html"><![CDATA[<p>The <a href="http://blog.macromates.com/2011/textmate-2-0-alpha/">TextMate 2 alpha</a> now supports callbacks in bundles. The callbacks are implemented as &#8220;semantic classes&#8221; in TextMate-speak. Our pal Alan shared a list of the new classes in a message to the TM mailing list which I have reproduced here:</p>
 
 <!--more-->
@@ -144,9 +144,9 @@ end</code></pre></noscript></div>
   
   <entry>
     <title type="html"><![CDATA['Twas ever thus]]></title>
-    <link href="http://mkb.github.com/blog/2011/12/04/twas-ever-thus/"/>
+    <link href="http://mojinations.com/blog/2011/12/04/twas-ever-thus/"/>
     <updated>2011-12-04T11:53:00-08:00</updated>
-    <id>http://mkb.github.com/blog/2011/12/04/twas-ever-thus</id>
+    <id>http://mojinations.com/blog/2011/12/04/twas-ever-thus</id>
     <content type="html"><![CDATA[<p><a href="http://xkcd.com/979/"><img src="http://imgs.xkcd.com/comics/wisdom_of_the_ancients.png" alt="An xkcd compic" /></a></p>
 
 <p>If I had a dollar for every time this happened to me, I&#8217;d mind it just a little bit less.</p>
@@ -155,9 +155,9 @@ end</code></pre></noscript></div>
   
   <entry>
     <title type="html"><![CDATA[Set IM status from Panobar song]]></title>
-    <link href="http://mkb.github.com/blog/2011/11/09/set-im-status-from-panobar-song/"/>
+    <link href="http://mojinations.com/blog/2011/11/09/set-im-status-from-panobar-song/"/>
     <updated>2011-11-09T16:49:00-08:00</updated>
-    <id>http://mkb.github.com/blog/2011/11/09/set-im-status-from-panobar-song</id>
+    <id>http://mojinations.com/blog/2011/11/09/set-im-status-from-panobar-song</id>
     <content type="html"><![CDATA[<p><a href="https://github.com/PromyLOPh/pianobar">Pianobar</a> is a Pandora client which can be installed via MacPorts.  This script allows pianobar to update your IM status with the name of the
 current song.  Thanks to Jessica Allen for the usage docs.</p>
 
@@ -215,9 +215,9 @@ end
   
   <entry>
     <title type="html"><![CDATA[A Unix stumper]]></title>
-    <link href="http://mkb.github.com/blog/2011/11/08/a-unix-stumper/"/>
+    <link href="http://mojinations.com/blog/2011/11/08/a-unix-stumper/"/>
     <updated>2011-11-08T10:38:00-08:00</updated>
-    <id>http://mkb.github.com/blog/2011/11/08/a-unix-stumper</id>
+    <id>http://mojinations.com/blog/2011/11/08/a-unix-stumper</id>
     <content type="html"><![CDATA[<blockquote><p><strong>EDIT:</strong> Problem solved.  <a href="https://twitter.com/#!/bleah">Noah</a> and <a href="http://twitter.com/#!/dpiddee">Dan</a> hit the nail
 on the head.  Updating the God config to explicitly use the correct gid rather than relying
 on picking up additional groups from /etc/group did the trick.  I still wish that wan&#8217;t
@@ -267,9 +267,9 @@ box I&#8217;ve tested on&#8211; more than a dozen at this point.</p>
   
   <entry>
     <title type="html"><![CDATA[My development tools]]></title>
-    <link href="http://mkb.github.com/blog/2011/08/18/my-development-tools/"/>
+    <link href="http://mojinations.com/blog/2011/08/18/my-development-tools/"/>
     <updated>2011-08-18T14:27:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/08/18/my-development-tools</id>
+    <id>http://mojinations.com/blog/2011/08/18/my-development-tools</id>
     <content type="html"><![CDATA[<p>My colleague <a href="http://www.joshualane.com/">Joshua Lane</a> just switched to using a Mac, so I thought now might be a good time to talk about the tools I use for development.  Josh has actually seen most of these, but maybe there are one or two you (or he) haven&#8217;t.</p>
 
 <!--more-->
@@ -340,9 +340,9 @@ box I&#8217;ve tested on&#8211; more than a dozen at this point.</p>
   
   <entry>
     <title type="html"><![CDATA[Homebrew?  No thanks.]]></title>
-    <link href="http://mkb.github.com/blog/2011/08/07/homebrew--no-thanks/"/>
+    <link href="http://mojinations.com/blog/2011/08/07/homebrew--no-thanks/"/>
     <updated>2011-08-07T20:27:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/08/07/homebrew&#8211;no-thanks</id>
+    <id>http://mojinations.com/blog/2011/08/07/homebrew&#8211;no-thanks</id>
     <content type="html"><![CDATA[<p>I know lots of smart developers who have switched from MacPorts to Homebrew.  I don&#8217;t think the switch makes sense.  Let&#8217;s add up the pros and cons.</p>
 
 <!--more-->
@@ -401,9 +401,9 @@ box I&#8217;ve tested on&#8211; more than a dozen at this point.</p>
   
   <entry>
     <title type="html"><![CDATA[Color scheme for Multitail and Pow logs]]></title>
-    <link href="http://mkb.github.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs/"/>
+    <link href="http://mojinations.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs/"/>
     <updated>2011-06-28T23:40:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs</id>
+    <id>http://mojinations.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs</id>
     <content type="html"><![CDATA[<p>I recently discovered <a href="http://www.vanheusden.com/multitail/">Multitail</a>
 and it&#8217;s my new favorite utility.  The settings below
 will give nice syntax coloring when viewing <a href="http://pow.cx">Pow&#8217;s</a> logs.</p>
@@ -431,9 +431,9 @@ cs_re_s:white,black,underline:WARNING  ((.*):[0-9]+:in `(.*)')
   
   <entry>
     <title type="html"><![CDATA[Prevent an infinite loop in Autotest by ignoring volatile files]]></title>
-    <link href="http://mkb.github.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files/"/>
+    <link href="http://mojinations.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files/"/>
     <updated>2011-06-22T23:20:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files</id>
+    <id>http://mojinations.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files</id>
     <content type="html"><![CDATA[<div><script src='https://gist.github.com/1040784.js?file='></script>
 <noscript><pre><code>Autotest.add_hook :initialize do |at|
   # Prevent infinite loops by ignoring volatile files
@@ -450,9 +450,9 @@ end
   
   <entry>
     <title type="html"><![CDATA[Colloquy away/back scripts for Pomodoro.app]]></title>
-    <link href="http://mkb.github.com/blog/2011/05/14/colloquy-away-back-scripts-for-pomodoro-app/"/>
+    <link href="http://mojinations.com/blog/2011/05/14/colloquy-away-back-scripts-for-pomodoro-app/"/>
     <updated>2011-05-14T00:00:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/05/14/colloquy-away-back-scripts-for-pomodoro-app</id>
+    <id>http://mojinations.com/blog/2011/05/14/colloquy-away-back-scripts-for-pomodoro-app</id>
     <content type="html"><![CDATA[<div><script src='https://gist.github.com/1119718.js?file='></script>
 <noscript><pre><code>tell application &quot;System Events&quot; to if exists process &quot;Colloquy&quot; then
   tell application &quot;Colloquy&quot;
@@ -472,9 +472,9 @@ end if
   
   <entry>
     <title type="html"><![CDATA[Using an unreleased gem version with Bundler]]></title>
-    <link href="http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
+    <link href="http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
     <updated>2011-05-06T23:06:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
+    <id>http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
     <content type="html"><![CDATA[<h2>TL;DR</h2>
 
 <p>Do this:</p>
@@ -533,9 +533,9 @@ Source does not contain any versions of 'w3c_validators (&gt;= 0, runtime)'
   
   <entry>
     <title type="html"><![CDATA[Using an unreleased gem version with Bundler]]></title>
-    <link href="http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
+    <link href="http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
     <updated>2011-05-06T23:06:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
+    <id>http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
     <content type="html"><![CDATA[<h2>TL;DR</h2>
 
 <p>Do this:</p>

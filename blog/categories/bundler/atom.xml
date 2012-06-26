@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: bundler | mojinations]]></title>
-  <link href="http://mkb.github.com/blog/categories/bundler/atom.xml" rel="self"/>
-  <link href="http://mkb.github.com/"/>
-  <updated>2012-06-25T18:48:12-07:00</updated>
-  <id>http://mkb.github.com/</id>
+  <link href="http://mojinations.com/blog/categories/bundler/atom.xml" rel="self"/>
+  <link href="http://mojinations.com/"/>
+  <updated>2012-06-25T18:51:49-07:00</updated>
+  <id>http://mojinations.com/</id>
   <author>
     <name><![CDATA[mkb]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Using an unreleased gem version with Bundler]]></title>
-    <link href="http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
+    <link href="http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
     <updated>2011-05-06T23:06:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
+    <id>http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
     <content type="html"><![CDATA[<h2>TL;DR</h2>
 
 <p>Do this:</p>
@@ -82,9 +82,9 @@ gem 'w3c_validators', "1.1.1", :git =&gt; 'git://github.com/alexdunae/w3c_valida
   
   <entry>
     <title type="html"><![CDATA[Using an unreleased gem version with Bundler]]></title>
-    <link href="http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
+    <link href="http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
     <updated>2011-05-06T23:06:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
+    <id>http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
     <content type="html"><![CDATA[<h2>TL;DR</h2>
 
 <p>Do this:</p>

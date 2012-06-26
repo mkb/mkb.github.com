@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: unix | mojinations]]></title>
-  <link href="http://mkb.github.com/blog/categories/unix/atom.xml" rel="self"/>
-  <link href="http://mkb.github.com/"/>
-  <updated>2012-06-25T18:48:12-07:00</updated>
-  <id>http://mkb.github.com/</id>
+  <link href="http://mojinations.com/blog/categories/unix/atom.xml" rel="self"/>
+  <link href="http://mojinations.com/"/>
+  <updated>2012-06-25T18:51:49-07:00</updated>
+  <id>http://mojinations.com/</id>
   <author>
     <name><![CDATA[mkb]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Homebrew?  No thanks.]]></title>
-    <link href="http://mkb.github.com/blog/2011/08/07/homebrew--no-thanks/"/>
+    <link href="http://mojinations.com/blog/2011/08/07/homebrew--no-thanks/"/>
     <updated>2011-08-07T20:27:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/08/07/homebrew--no-thanks</id>
+    <id>http://mojinations.com/blog/2011/08/07/homebrew--no-thanks</id>
     <content type="html"><![CDATA[<p>I know lots of smart developers who have switched from MacPorts to Homebrew.  I don't think the switch makes sense.  Let's add up the pros and cons.</p>
 
 <!--more-->

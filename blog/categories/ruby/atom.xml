@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ruby | mojinations]]></title>
-  <link href="http://mkb.github.com/blog/categories/ruby/atom.xml" rel="self"/>
-  <link href="http://mkb.github.com/"/>
-  <updated>2012-06-25T18:48:12-07:00</updated>
-  <id>http://mkb.github.com/</id>
+  <link href="http://mojinations.com/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://mojinations.com/"/>
+  <updated>2012-06-25T18:51:49-07:00</updated>
+  <id>http://mojinations.com/</id>
   <author>
     <name><![CDATA[mkb]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Color scheme for Multitail and Pow logs]]></title>
-    <link href="http://mkb.github.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs/"/>
+    <link href="http://mojinations.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs/"/>
     <updated>2011-06-28T23:40:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs</id>
+    <id>http://mojinations.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs</id>
     <content type="html"><![CDATA[<p>I recently discovered <a href="http://www.vanheusden.com/multitail/">Multitail</a>
 and it's my new favorite utility.  The settings below
 will give nice syntax coloring when viewing <a href="http://pow.cx">Pow's</a> logs.</p>
@@ -43,9 +43,9 @@ cs_re_s:white,black,underline:WARNING  ((.*):[0-9]+:in `(.*)')
   
   <entry>
     <title type="html"><![CDATA[Prevent an infinite loop in Autotest by ignoring volatile files]]></title>
-    <link href="http://mkb.github.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files/"/>
+    <link href="http://mojinations.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files/"/>
     <updated>2011-06-22T23:20:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files</id>
+    <id>http://mojinations.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files</id>
     <content type="html"><![CDATA[<p><div><script src='https://gist.github.com/1040784.js?file='></script>
 <noscript><pre><code>Autotest.add_hook :initialize do |at|
   # Prevent infinite loops by ignoring volatile files
@@ -60,9 +60,9 @@ end
   
   <entry>
     <title type="html"><![CDATA[Using an unreleased gem version with Bundler]]></title>
-    <link href="http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
+    <link href="http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
     <updated>2011-05-06T23:06:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
+    <id>http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
     <content type="html"><![CDATA[<h2>TL;DR</h2>
 
 <p>Do this:</p>
@@ -127,9 +127,9 @@ gem 'w3c_validators', "1.1.1", :git =&gt; 'git://github.com/alexdunae/w3c_valida
   
   <entry>
     <title type="html"><![CDATA[Using an unreleased gem version with Bundler]]></title>
-    <link href="http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
+    <link href="http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
     <updated>2011-05-06T23:06:00-07:00</updated>
-    <id>http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
+    <id>http://mojinations.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
     <content type="html"><![CDATA[<h2>TL;DR</h2>
 
 <p>Do this:</p>
