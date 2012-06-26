@@ -1,0 +1,595 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[mojinations]]></title>
+  <link href="http://mkb.github.com/atom.xml" rel="self"/>
+  <link href="http://mkb.github.com/"/>
+  <updated>2012-06-25T18:48:12-07:00</updated>
+  <id>http://mkb.github.com/</id>
+  <author>
+    <name><![CDATA[mkb]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Node.js is badass rock star tech]]></title>
+    <link href="http://mkb.github.com/blog/2012/02/27/node-dot-js-is-badass-rock-star-tech/"/>
+    <updated>2012-02-27T16:14:00-08:00</updated>
+    <id>http://mkb.github.com/blog/2012/02/27/node-dot-js-is-badass-rock-star-tech</id>
+    <content type="html"><![CDATA[<iframe width="560" height="315" src="http://www.youtube.com/embed/bzkRVzciAZg?rel=0" frameborder="0" allowfullscreen></iframe>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Instrumenting excon]]></title>
+    <link href="http://mkb.github.com/blog/2012/01/30/instrumenting-excon/"/>
+    <updated>2012-01-30T16:12:00-08:00</updated>
+    <id>http://mkb.github.com/blog/2012/01/30/instrumenting-excon</id>
+    <content type="html"><![CDATA[<p>At Engine Yard we make heavy use of <a href="https://github.com/fog/fog">fog</a> to interface with back-end cloud providers.  Fog in turn uses <a href="https://github.com/geemus/excon">excon</a> to make HTTP requests.  A few features make excon a better choice than Net::HTTP:</p>
+
+<ul>
+<li>Better at reusing connections.</li>
+<li>Automatic retries for idempotent requests.</li>
+<li>Easy to stub for your unit tests.</li>
+</ul>
+
+
+<p>My coworkers and I at Engine Yard needed to measure the performance of fog&#8217;s HTTP calls so we added one more feature to excon:  instrumentation.</p>
+
+<!--more-->
+
+
+<h2>Enter ActiveSupport::Notifications</h2>
+
+<p><a href="https://twitter.com/larrytheliquid">Larry Diehl</a> called my attention to the new-fangled notification API in Rails 3, namely, <a href="http://api.rubyonrails.org/classes/ActiveSupport/Notifications.html">ActiveSupport::Notifications</a>.  Rather than reinvent the wheel, said Larry, it made sense to use an existing API which at least some people would already be familiar with.  ActiveSupport::Notifications is an implementation of our old friend, the publish-subscribe pattern and turns out to be pretty easy to use.</p>
+
+<p>I won&#8217;t re-create the RDoc here, but the basic idea is you can instrument blocks of code by wrapping them in an #instrument call like so:</p>
+
+<div><script src='https://gist.github.com/1707877.js?file='></script>
+<noscript><pre><code>ActiveSupport::Notifications.instrument(&quot;cheezburger.haz&quot;, :extra =&gt; :information) do
+  cheezburger = Monorail.get_cheezburger()
+end
+</code></pre></noscript></div>
+
+
+<p>Elsewhere in your app you can record those events by subscribing to them:</p>
+
+<div><script src='https://gist.github.com/1707917.js?file='></script>
+<noscript><pre><code>ActiveSupport::Notifications.subscribe(/cheezburger/) do |*args|
+  puts &quot;K THX BAI&quot;
+end</code></pre></noscript></div>
+
+
+<p>Now every time the first block is called, we&#8217;ll be notified with a call to the second block.  Excellent.  Now what?</p>
+
+<h2>With excon</h2>
+
+<p>When you include an instrumentor class in the Excon constructor you can then subscribe to excon&#8217;s events:</p>
+
+<div><script src='https://gist.github.com/1707962.js?file='></script>
+<noscript><pre><code>Excon.new('http://geemus.com', :instrumentor =&gt; ActiveSupport::Notifications)
+
+# Elsewhere...
+ActiveSupport::Notifications.subscribe(/excon/) do |*args|
+  puts &quot;Excon did stuff!&quot;
+end
+
+</code></pre></noscript></div>
+
+
+<p>If :instrumentor_name is omitted, the base name defaults to &#8220;excon&#8221;.  Excon generates three different events:  excon.request, excon.retry, and excon.error.  Requests and retries each have associated durations, errors do not.  By digging into args we can determine how long the request took along with other assorted goodness.</p>
+
+<h2>Too many gems!</h2>
+
+<p>Suppose you don&#8217;t want to include activesupport in your application.  No problem.  Simply define a class which responds to the #instrument method and record incoming events however you please.</p>
+
+<div><script src='https://gist.github.com/1708120.js?file='></script>
+<noscript><pre><code>class SimpleInstrumentor
+  class &lt;&lt; self
+    attr_accessor :events
+
+    def instrument(name, params = {}, &amp;block)
+      puts &quot;#{name} just happened.&quot;
+      yield if block_given?
+    end
+  end
+end</code></pre></noscript></div>
+
+
+<h2>Go forth and conquer</h2>
+
+<p>Hopefully I&#8217;ve given you enough information to start measuring excon for your own purposes.  In a future post I&#8217;ll discuss how we used this excon feature to make pretty graphs of our fog calls to AWS.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Callbacks in TextMate 2]]></title>
+    <link href="http://mkb.github.com/blog/2011/12/25/callbacks-in-textmate-2/"/>
+    <updated>2011-12-25T12:52:00-08:00</updated>
+    <id>http://mkb.github.com/blog/2011/12/25/callbacks-in-textmate-2</id>
+    <content type="html"><![CDATA[<p>The <a href="http://blog.macromates.com/2011/textmate-2-0-alpha/">TextMate 2 alpha</a> now supports callbacks in bundles. The callbacks are implemented as &#8220;semantic classes&#8221; in TextMate-speak. Our pal Alan shared a list of the new classes in a message to the TM mailing list which I have reproduced here:</p>
+
+<!--more-->
+
+
+<blockquote><ul>
+<li><code>callback.document.did-save</code></li>
+<li><code>callback.document.binary-import</code></li>
+<li><code>callback.document.binary-export</code></li>
+<li><code>callback.document.import</code></li>
+<li><code>callback.document.export</code></li>
+<li><code>callback.file-browser.action-menu</code></li>
+<li><code>callback.mouse-click</code></li>
+</ul>
+
+
+<p>For the import/export callbacks input/output must be document/replace document. Binary means before/after TextMate converts to/from UTF-8/LF.</p>
+
+<p>For the mouse-click callback you can limit this to a modifier by using any of the following in the scope:</p>
+
+<ul>
+<li><code>dyn.modifier.shift</code></li>
+<li><code>dyn.modifier.control</code></li>
+<li><code>dyn.modifier.option</code></li>
+<li><code>dyn.modifier.command</code></li>
+</ul>
+
+
+<p>The above should be considered subject to change.</p></blockquote>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA['Twas ever thus]]></title>
+    <link href="http://mkb.github.com/blog/2011/12/04/twas-ever-thus/"/>
+    <updated>2011-12-04T11:53:00-08:00</updated>
+    <id>http://mkb.github.com/blog/2011/12/04/twas-ever-thus</id>
+    <content type="html"><![CDATA[<p><a href="http://xkcd.com/979/"><img src="http://imgs.xkcd.com/comics/wisdom_of_the_ancients.png" alt="An xkcd compic" /></a></p>
+
+<p>If I had a dollar for every time this happened to me, I&#8217;d mind it just a little bit less.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Set IM status from Panobar song]]></title>
+    <link href="http://mkb.github.com/blog/2011/11/09/set-im-status-from-panobar-song/"/>
+    <updated>2011-11-09T16:49:00-08:00</updated>
+    <id>http://mkb.github.com/blog/2011/11/09/set-im-status-from-panobar-song</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/PromyLOPh/pianobar">Pianobar</a> is a Pandora client which can be installed via MacPorts.  This script allows pianobar to update your IM status with the name of the
+current song.  Thanks to Jessica Allen for the usage docs.</p>
+
+<!--more-->
+
+
+<div><script src='https://gist.github.com/1218376.js?file='></script>
+<noscript><pre><code>#!/usr/bin/env ruby -wKU
+
+LOG = 'eventcmd.log'
+event = ARGV.first
+@message = 'Gug.'
+
+def ichat_message
+  %Q{set status message to &quot;#{@message}&quot;}
+end
+
+def adium_message
+  %Q{set status message of every account to &quot;#{@message}&quot;}
+end
+
+def applescript
+  %Q{
+    tell application &quot;System Events&quot;
+      if exists process &quot;iChat&quot; then
+        tell application &quot;iChat&quot;
+          #{ichat_message}
+        end tell
+      end if
+      if exists process &quot;Adium&quot; then
+        tell application &quot;Adium&quot;
+          #{adium_message}
+        end tell
+      end if
+    end tell
+  }
+end
+
+def run_applescript
+  IO.popen(&quot;osascript&quot;, &quot;w&quot;) { |f| f.puts(applescript) }
+end
+
+if event == 'songstart'
+  details = {}
+  $stdin.each_line do |l|
+    details.store(*l.chomp.split('=', 2))
+  end
+  @message = %Q|now playing \\&quot;#{details['title']}\\&quot; by #{details['artist']}|
+  run_applescript
+end
+</code></pre></noscript></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A Unix stumper]]></title>
+    <link href="http://mkb.github.com/blog/2011/11/08/a-unix-stumper/"/>
+    <updated>2011-11-08T10:38:00-08:00</updated>
+    <id>http://mkb.github.com/blog/2011/11/08/a-unix-stumper</id>
+    <content type="html"><![CDATA[<blockquote><p><strong>EDIT:</strong> Problem solved.  <a href="https://twitter.com/#!/bleah">Noah</a> and <a href="http://twitter.com/#!/dpiddee">Dan</a> hit the nail
+on the head.  Updating the God config to explicitly use the correct gid rather than relying
+on picking up additional groups from /etc/group did the trick.  I still wish that wan&#8217;t
+necessary, but a working setup is good enough for me.</p></blockquote>
+
+<p>If you have a good understanding of Unix process spawning and group affiliation, I could use your help.</p>
+
+<!--more-->
+
+
+<p>I&#8217;m seeing some unexpected behavior on Gentoo boxen.  I&#8217;ve got a user called &#8220;deploy&#8221;
+who belongs to two groups:  deploy and rvm.  When I ssh into the box I can see that
+deploy is in the correct groups:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>deploy@[redacted] ~ $ id
+</span><span class='line'>uid=1000(deploy) gid=1000(deploy) groups=1000(deploy),1003(rvm)
+</span><span class='line'>deploy@[redacted] ~ $ groups
+</span><span class='line'>deploy rvm</span></code></pre></td></tr></table></div></figure>
+
+
+<p>However, when I invoke a script from a <a href="https://github.com/defunkt/resque">Resque</a> worker running as that user, I only
+see one of the two groups:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+ id
+</span><span class='line'>uid=1000(deploy) gid=1000(deploy) groups=1000(deploy)
+</span><span class='line'>+ groups
+</span><span class='line'>deploy</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Resque is spawned by <a href="http://god.rubyforge.org/">God</a>, which is spawned by inittab.</p>
+
+<p>Of course the first thing I did was bounce Resque, then re-bounce after bouncing
+the God process invoking Resque.  No love.  I&#8217;ve seen the same behavior on every
+box I&#8217;ve tested on&#8211; more than a dozen at this point.</p>
+
+<p>Help me, Obi Wan Kenobi, you&#8217;re my only hope.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My development tools]]></title>
+    <link href="http://mkb.github.com/blog/2011/08/18/my-development-tools/"/>
+    <updated>2011-08-18T14:27:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/08/18/my-development-tools</id>
+    <content type="html"><![CDATA[<p>My colleague <a href="http://www.joshualane.com/">Joshua Lane</a> just switched to using a Mac, so I thought now might be a good time to talk about the tools I use for development.  Josh has actually seen most of these, but maybe there are one or two you (or he) haven&#8217;t.</p>
+
+<!--more-->
+
+
+<h2>The core</h2>
+
+<p>I spend most of my day staring at:</p>
+
+<ul>
+<li><a href="http://www.zsh.org/">zsh</a></li>
+<li><a href="http://www.gnu.org/s/screen/">GNU Screen</a> - Tabs are for suckers</li>
+<li><a href="http://macromates.com/">TextMate</a> - My editor of choice. YMMV</li>
+<li><a href="http://qsapp.com/">Quicksilver</a> - Spiff launcher tool.  Comparable to LaunchBar, et al.  Has become an extension of my fingers</li>
+<li><a href="http://git-scm.com/">Git</a> - &#8216;Nuff said</li>
+<li><a href="https://rvm.beginrescueend.com/">RVM</a> - If you are doing Ruby development, do yourself a favor and install RVM</li>
+</ul>
+
+
+<h2>Supporting cast</h2>
+
+<ul>
+<li><a href="http://gembundler.com/">Bundler</a> - [As with RVM above.]</li>
+<li><a href="http://www.macports.org/">MacPorts</a> and <a href="http://mojinations.com/blog/2011/08/07/homebrew--no-thanks/">not Homebrew</a> for installing various Unix ports (Git, MySQL, etc.)</li>
+<li><a href="http://pow.cx/">Pow</a> and the Powder gem - Beautifully simple web server for local development.  Powder makes Pow even easier to use</li>
+<li><a href="http://gitx.frim.nl/">GitX</a> - I actually run one of the forks, but damned if I can remember which</li>
+<li>Some TextMate extras:
+
+<ul>
+<li><a href="http://ciaranwal.sh/projectplus">ProjectPlus</a> - Much sexiness for the project drawer, including SCM integration.</li>
+<li><a href="http://solutions.treypiepmeier.com/2009/02/25/installing-getbundles-on-a-fresh-copy-of-textmate/">GetBundles</a> - Just what it sounds like</li>
+<li><a href="https://github.com/protocool/ackmate">AckMate</a> - Far superior to TM&#8217;s built-in project search.</li>
+<li><a href="http://www.pixelpopdev.com/baby-the-code-shines-bright/">Baby, the code shines bright</a> - Purdie color theme.  I&#8217;ve been sticking this on all the pairing stations at work.  (Yes, that was me.)</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>Honorable mentions</h2>
+
+<ul>
+<li><a href="http://www.rogueamoeba.com/airfoil/">Airfoil</a> - Route audio from any app to remote speakers or another Mac</li>
+<li><a href="http://lightheadsw.com/caffeine/">Caffeine</a> - Keeps my screen from dimming while I am otherwise occupied</li>
+<li><a href="http://tapbots.com/software/pastebot/#sync">Pastebot Sync</a> - Companion to the Pastebot iPhone app.  Allows copying text/images between Mac and iPhone</li>
+<li><a href="http://stereopsis.com/flux/">F.lux</a> - Easy on the eyes and I think I&#8217;m sleeping better</li>
+<li><a href="http://labtick.proculo.de/">Lab Tick</a> - Stops MacOS from second-guessing my keyboard backlight setting</li>
+<li><a href="http://fluidapp.com/">Fluid</a> - Site-specific browsers for the win</li>
+<li><a href="http://mizage.com/divvy/">Divvy</a> - Nice window management</li>
+<li><a href="http://www.abyssoft.com/software/teleport/">Teleport</a> - Easiest means I&#8217;ve seen of controlling adjacent Macs</li>
+<li><a href="http://perian.org/">Perian</a> - Lets QuickTime open all those crazy video formats</li>
+<li><a href="http://www.noodlesoft.com/hazel.php">Hazel</a> - Helps manage waxy buildup of stray files</li>
+<li><a href="http://itunes.apple.com/us/app/web-monitor/id418832006?mt=12">WebMonitor</a> - Pings my personal websites periodically and complains if one is down</li>
+</ul>
+
+
+<h2>In case it wasn&#8217;t obvious</h2>
+
+<ul>
+<li><a href="http://adium.im/">Adium</a> - Multiprotocol IM client</li>
+<li><a href="https://dropbox.com/">Dropbox</a> - Don&#8217;t leave home without it</li>
+<li><a href="http://evernote.com/">Evernote</a> - You know the drill</li>
+<li><a href="http://www.omnigroup.com/products/omnifocus/">OmniFocus</a> - Todo list on steroids</li>
+<li><a href="http://colloquy.info/">Colloquy</a> - IRC client</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Homebrew?  No thanks.]]></title>
+    <link href="http://mkb.github.com/blog/2011/08/07/homebrew--no-thanks/"/>
+    <updated>2011-08-07T20:27:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/08/07/homebrew&#8211;no-thanks</id>
+    <content type="html"><![CDATA[<p>I know lots of smart developers who have switched from MacPorts to Homebrew.  I don&#8217;t think the switch makes sense.  Let&#8217;s add up the pros and cons.</p>
+
+<!--more-->
+
+
+<h2>Homebrew uses OS libs instead of building dependencies</h2>
+
+<p>That&#8217;s not a feature, that&#8217;s a bug.  Consider the ramifications:</p>
+
+<ul>
+<li>Relying on OS tools and libraries uses less disk space.  So what?  Disk is essentially free.  Add up the size of those additional installs.  It doesn&#8217;t amount to much.</li>
+<li>Builds are faster.  That&#8217;s nice, but how often do you install packages compared to how often you use them?  This is a one-time cost and you can do other work while the builds are running.  Hardware advances keep making builds faster anyway.</li>
+<li>MacPorts controls dependencies, Homebrew does not.  Apple frequently ships old or even buggy libraries and tools.  Moreover these native components can change out from under us when the OS is upgraded or patched.  Why anyone would deliberately choose to cede control of dependencies is a mystery to me.</li>
+</ul>
+
+
+<p>So using the system&#8217;s native libraries and tools provides negligible benefit and incurs risk.  Not so good.</p>
+
+<h2>Homebrew lacks GNU Screen</h2>
+
+<p>The MacOS built-in <code>screen</code> binary is slightly troubled, so I need to install another.  Homebrew can&#8217;t help me.  If you&#8217;re perfectly happy with the native screen, then this isn&#8217;t applicable, but in my case the point goes to MacPorts.</p>
+
+<h2>Homebrew installs packages into their own isolated prefixes and then symlinks into /usr/local</h2>
+
+<p>I&#8217;ve repeatedly seen bright people tout this as an advantage which is befuddling.  Isolated prefix:  good.  Symlinking everything into <code>/usr/local</code>:  bad.  This means that to remove Homebrew from a machine, I can&#8217;t just nuke a single directory.  I have to deal with symlink turds all over the place.  Brew can clean up the symlinks before I delete the executable, but what if the executable is broken?  Or what if I forget?  Or never knew?  That&#8217;s a lot of mess to clean up.</p>
+
+<p>Older versions of MacPorts left some residue around the system, but were pretty well behaved.  Current versions are very well behaved.  MacPorts isn&#8217;t perfect in this regard, but beats Homebrew hands down.</p>
+
+<h2>Homebrew doesn&#8217;t want to run as root, but then wants to write to /usr/local</h2>
+
+<p>Yes, it&#8217;s worse than just symlinks.  Homebrew wants to take over <code>/usr/local</code> which is commonly used for other third-party packages.  Homebrew users are expected to <code>chown</code> <code>/usr/local</code> to their own ID and troubleshooting advice commonly advises Homebrew users to remove <code>/usr/local</code> entirely.  Ceding control of <code>/usr/local</code> to Homebrew means trouble when additional packages are installed into <code>/usr/local</code> or when the machine has multiple users.</p>
+
+<p>When told that taking over <code>/usr/local</code> is a terrible idea, Homebrew apologists respond with &#8220;That&#8217;s only a suggestion.  You are free to use whatever install location you would like.&#8221;  That&#8217;s not quite true.  <code>/usr/local</code> isn&#8217;t a suggestion, it&#8217;s the default.  Customization is nice, but well-behaved software picks reasonable defaults.  The Homebrew installation instructions even go so far as to say &#8220;Pick another prefix at your peril!&#8221;  That&#8217;s more than a simple suggestion.</p>
+
+<h2>Homebrew said to have a better command line user interface</h2>
+
+<p>I&#8217;m perfectly content with MacPorts&#8217; CLI, but perhaps I don&#8217;t know what I&#8217;m missing.  I&#8217;ll give the points here to Homebrew.</p>
+
+<h2>Homebrew&#8217;s recipes are in Ruby, while MacPorts&#8217; are in Tcl</h2>
+
+<p>I like Ruby, I dislike Tcl.  However, the language used by my ports system is moot.  If I need to know what language my ports system uses, then the ports system has failed in its primary mission: deal with the details so I can think about something else.</p>
+
+<h2>Homebrew and its installation scripts are hosted at Github and have good GitHub integration.</h2>
+
+<p>Homebrew&#8217;s GitHub integration allows for easy use of <a href="https://github.com/adamv/homebrew-alt">third-party formulae</a>.  While not compelling, this is quite interesting and worth keeping an eye on.</p>
+
+<h2>Pure superficiality</h2>
+
+<p>It&#8217;s petty of me, but I was disappointed to see someone purporting to be Max Howell, author of Homebrew respond to technical and factual criticism by <a href="http://news.ycombinator.com/item?id=1189274">calling the critic an &#8220;ignorant twat.&#8221;</a>  God knows we&#8217;ve all misbehaved on the internet at some point, but it left a bad taste in my mouth.</p>
+
+<h2>The bottom line</h2>
+
+<p>At the end of the day, I need MacPorts for GNU Screen if nothing else.  I&#8217;m willing to entertain the idea of running another ports system alongside MacPorts, but I can&#8217;t come up with a single good reason to give that job to Homebrew.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Color scheme for Multitail and Pow logs]]></title>
+    <link href="http://mkb.github.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs/"/>
+    <updated>2011-06-28T23:40:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs</id>
+    <content type="html"><![CDATA[<p>I recently discovered <a href="http://www.vanheusden.com/multitail/">Multitail</a>
+and it&#8217;s my new favorite utility.  The settings below
+will give nice syntax coloring when viewing <a href="http://pow.cx">Pow&#8217;s</a> logs.</p>
+
+<div><script src='https://gist.github.com/1050659.js?file='></script>
+<noscript><pre><code># % cd ~/Library/Logs/Pow/apps
+# % multitail --config &lt;some path&gt;/multitail.conf  -CS pow app1.log app2.log ...
+
+colorscheme:pow:
+cs_re:blue::
+cs_re:cyan:^\[[^]]*]
+cs_re:red:ERROR
+cs_re:yellow:WARNING
+cs_re:green:NOTICE
+cs_re:magenta:DEBUG
+cs_re:magenta:VERBOSE
+cs_re_s:red,black,underline:WARNING ([A-Z].*)
+cs_re_s:white,black,underline:WARNING  ((.*):[0-9]+:in `(.*)')
+</code></pre></noscript></div>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Prevent an infinite loop in Autotest by ignoring volatile files]]></title>
+    <link href="http://mkb.github.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files/"/>
+    <updated>2011-06-22T23:20:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files</id>
+    <content type="html"><![CDATA[<div><script src='https://gist.github.com/1040784.js?file='></script>
+<noscript><pre><code>Autotest.add_hook :initialize do |at|
+  # Prevent infinite loops by ignoring volatile files
+  %w{.git vendordb log tmp .DS_store Gemfile.lock}.each do |exception|
+    at.add_exception(exception)
+  end
+end
+</code></pre></noscript></div>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Colloquy away/back scripts for Pomodoro.app]]></title>
+    <link href="http://mkb.github.com/blog/2011/05/14/colloquy-away-back-scripts-for-pomodoro-app/"/>
+    <updated>2011-05-14T00:00:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/05/14/colloquy-away-back-scripts-for-pomodoro-app</id>
+    <content type="html"><![CDATA[<div><script src='https://gist.github.com/1119718.js?file='></script>
+<noscript><pre><code>tell application &quot;System Events&quot; to if exists process &quot;Colloquy&quot; then
+  tell application &quot;Colloquy&quot;
+    set aC to every connection
+    repeat with c in aC
+      set aR to (every chat room of c)
+      repeat with r in aR
+        set away message of c to &quot;&quot;
+      end repeat
+    end repeat
+  end tell
+end if
+</code></pre></noscript></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using an unreleased gem version with Bundler]]></title>
+    <link href="http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
+    <updated>2011-05-06T23:06:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
+    <content type="html"><![CDATA[<h2>TL;DR</h2>
+
+<p>Do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;nokogiri&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;w3c_validators&#39;</span><span class="p">,</span> <span class="s2">&quot;1.1.1&quot;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">&#39;git://github.com/alexdunae/w3c_validators.git&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<h2>Why?</h2>
+
+<p>After experiencing trouble with the w3c_validators gem, I discovered that the problem was a <a href="https://github.com/alexdunae/w3c_validators/issues/3">known bug</a>.  A fix has been committed, but not yet released in gem form.  I could have gone with an older version of the gem, but instead tweaked my Gemfile (ie, Bundler) to use the latest and greatest code.</p>
+
+<p>I added a :git argument to my Gemfile, instructing bundler to grab the w3c_validators gem straight from the GitHub repo, bypassing rubygems.org.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;w3c_validators&#39;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">&#39;git://github.com/alexdunae/w3c_validators.git&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This turned out not to work:</p>
+
+<pre><code>Could not find gem 'w3c_validators (&gt;= 0, runtime)' in 
+git://github.com/alexdunae/w3c_validators.git (at master).
+Source does not contain any versions of 'w3c_validators (&gt;= 0, runtime)'
+</code></pre>
+
+<p>The code was present, but the latest revision lacks a gemspec.  To work around this, Bundler needs to know what version number to use for the code it pulls down:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;w3c_validators&#39;</span><span class="p">,</span> <span class="s2">&quot;1.1.1&quot;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">&#39;git://github.com/alexdunae/w3c_validators.git&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>KABLAM.  Still not quite right.  Without a gemspec, Bundler has no way of knowing that w3c_validators depends on nokogiri, so we must state the dependency explicitly:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;nokogiri&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;w3c_validators&#39;</span><span class="p">,</span> <span class="s2">&quot;1.1.1&quot;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">&#39;git://github.com/alexdunae/w3c_validators.git&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And then there was much rejoicing throughout the land.</p>
+
+<h2>RTFM</h2>
+
+<p><a href="http://gembundler.com/git.html">http://gembundler.com/git.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using an unreleased gem version with Bundler]]></title>
+    <link href="http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
+    <updated>2011-05-06T23:06:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
+    <content type="html"><![CDATA[<h2>TL;DR</h2>
+
+<p>Do this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;nokogiri&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;w3c_validators&#39;</span><span class="p">,</span> <span class="s2">&quot;1.1.1&quot;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">&#39;git://github.com/alexdunae/w3c_validators.git&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<!--more-->
+
+
+<h2>Why?</h2>
+
+<p>After experiencing trouble with the w3c_validators gem, I discovered that the problem was a <a href="https://github.com/alexdunae/w3c_validators/issues/3">known bug</a>.  A fix has been committed, but not yet released in gem form.  I could have gone with an older version of the gem, but instead tweaked my Gemfile (ie, Bundler) to use the latest and greatest code.</p>
+
+<p>I added a :git argument to my Gemfile, instructing bundler to grab the w3c_validators gem straight from the GitHub repo, bypassing rubygems.org.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;w3c_validators&#39;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">&#39;git://github.com/alexdunae/w3c_validators.git&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This turned out not to work:</p>
+
+<pre><code>Could not find gem 'w3c_validators (&gt;= 0, runtime)' in 
+git://github.com/alexdunae/w3c_validators.git (at master).
+Source does not contain any versions of 'w3c_validators (&gt;= 0, runtime)'
+</code></pre>
+
+<p>The code was present, but the latest revision lacks a gemspec.  To work around this, Bundler needs to know what version number to use for the code it pulls down:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;w3c_validators&#39;</span><span class="p">,</span> <span class="s2">&quot;1.1.1&quot;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">&#39;git://github.com/alexdunae/w3c_validators.git&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>KABLAM.  Still not quite right.  Without a gemspec, Bundler has no way of knowing that w3c_validators depends on nokogiri, so we must state the dependency explicitly:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">gem</span> <span class="s1">&#39;nokogiri&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;w3c_validators&#39;</span><span class="p">,</span> <span class="s2">&quot;1.1.1&quot;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">&#39;git://github.com/alexdunae/w3c_validators.git&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And then there was much rejoicing throughout the land.</p>
+
+<h2>RTFM</h2>
+
+<p><a href="http://gembundler.com/git.html">http://gembundler.com/git.html</a></p>
+]]></content>
+  </entry>
+  
+</feed>

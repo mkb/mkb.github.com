@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: mac | mojinations]]></title>
+  <link href="http://mkb.github.com/blog/categories/mac/atom.xml" rel="self"/>
+  <link href="http://mkb.github.com/"/>
+  <updated>2012-06-25T18:48:12-07:00</updated>
+  <id>http://mkb.github.com/</id>
+  <author>
+    <name><![CDATA[mkb]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Homebrew?  No thanks.]]></title>
+    <link href="http://mkb.github.com/blog/2011/08/07/homebrew--no-thanks/"/>
+    <updated>2011-08-07T20:27:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/08/07/homebrew--no-thanks</id>
+    <content type="html"><![CDATA[<p>I know lots of smart developers who have switched from MacPorts to Homebrew.  I don't think the switch makes sense.  Let's add up the pros and cons.</p>
+
+<!--more-->
+
+
+<h2>Homebrew uses OS libs instead of building dependencies</h2>
+
+<p>That's not a feature, that's a bug.  Consider the ramifications:</p>
+
+<ul>
+<li>Relying on OS tools and libraries uses less disk space.  So what?  Disk is essentially free.  Add up the size of those additional installs.  It doesn't amount to much.</li>
+<li>Builds are faster.  That's nice, but how often do you install packages compared to how often you use them?  This is a one-time cost and you can do other work while the builds are running.  Hardware advances keep making builds faster anyway.</li>
+<li>MacPorts controls dependencies, Homebrew does not.  Apple frequently ships old or even buggy libraries and tools.  Moreover these native components can change out from under us when the OS is upgraded or patched.  Why anyone would deliberately choose to cede control of dependencies is a mystery to me.</li>
+</ul>
+
+
+<p>So using the system's native libraries and tools provides negligible benefit and incurs risk.  Not so good.</p>
+
+<h2>Homebrew lacks GNU Screen</h2>
+
+<p>The MacOS built-in <code>screen</code> binary is slightly troubled, so I need to install another.  Homebrew can't help me.  If you're perfectly happy with the native screen, then this isn't applicable, but in my case the point goes to MacPorts.</p>
+
+<h2>Homebrew installs packages into their own isolated prefixes and then symlinks into /usr/local</h2>
+
+<p>I've repeatedly seen bright people tout this as an advantage which is befuddling.  Isolated prefix:  good.  Symlinking everything into <code>/usr/local</code>:  bad.  This means that to remove Homebrew from a machine, I can't just nuke a single directory.  I have to deal with symlink turds all over the place.  Brew can clean up the symlinks before I delete the executable, but what if the executable is broken?  Or what if I forget?  Or never knew?  That's a lot of mess to clean up.</p>
+
+<p>Older versions of MacPorts left some residue around the system, but were pretty well behaved.  Current versions are very well behaved.  MacPorts isn't perfect in this regard, but beats Homebrew hands down.</p>
+
+<h2>Homebrew doesn't want to run as root, but then wants to write to /usr/local</h2>
+
+<p>Yes, it's worse than just symlinks.  Homebrew wants to take over <code>/usr/local</code> which is commonly used for other third-party packages.  Homebrew users are expected to <code>chown</code> <code>/usr/local</code> to their own ID and troubleshooting advice commonly advises Homebrew users to remove <code>/usr/local</code> entirely.  Ceding control of <code>/usr/local</code> to Homebrew means trouble when additional packages are installed into <code>/usr/local</code> or when the machine has multiple users.</p>
+
+<p>When told that taking over <code>/usr/local</code> is a terrible idea, Homebrew apologists respond with "That's only a suggestion.  You are free to use whatever install location you would like."  That's not quite true.  <code>/usr/local</code> isn't a suggestion, it's the default.  Customization is nice, but well-behaved software picks reasonable defaults.  The Homebrew installation instructions even go so far as to say "Pick another prefix at your peril!"  That's more than a simple suggestion.</p>
+
+<h2>Homebrew said to have a better command line user interface</h2>
+
+<p>I'm perfectly content with MacPorts' CLI, but perhaps I don't know what I'm missing.  I'll give the points here to Homebrew.</p>
+
+<h2>Homebrew's recipes are in Ruby, while MacPorts' are in Tcl</h2>
+
+<p>I like Ruby, I dislike Tcl.  However, the language used by my ports system is moot.  If I need to know what language my ports system uses, then the ports system has failed in its primary mission: deal with the details so I can think about something else.</p>
+
+<h2>Homebrew and its installation scripts are hosted at Github and have good GitHub integration.</h2>
+
+<p>Homebrew's GitHub integration allows for easy use of <a href="https://github.com/adamv/homebrew-alt">third-party formulae</a>.  While not compelling, this is quite interesting and worth keeping an eye on.</p>
+
+<h2>Pure superficiality</h2>
+
+<p>It's petty of me, but I was disappointed to see someone purporting to be Max Howell, author of Homebrew respond to technical and factual criticism by <a href="http://news.ycombinator.com/item?id=1189274">calling the critic an "ignorant twat."</a>  God knows we've all misbehaved on the internet at some point, but it left a bad taste in my mouth.</p>
+
+<h2>The bottom line</h2>
+
+<p>At the end of the day, I need MacPorts for GNU Screen if nothing else.  I'm willing to entertain the idea of running another ports system alongside MacPorts, but I can't come up with a single good reason to give that job to Homebrew.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Colloquy away/back scripts for Pomodoro.app]]></title>
+    <link href="http://mkb.github.com/blog/2011/05/14/colloquy-away-back-scripts-for-pomodoro-app/"/>
+    <updated>2011-05-14T00:00:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/05/14/colloquy-away-back-scripts-for-pomodoro-app</id>
+    <content type="html"><![CDATA[<p><div><script src='https://gist.github.com/1119718.js?file='></script>
+<noscript><pre><code>tell application &quot;System Events&quot; to if exists process &quot;Colloquy&quot; then
+  tell application &quot;Colloquy&quot;
+    set aC to every connection
+    repeat with c in aC
+      set aR to (every chat room of c)
+      repeat with r in aR
+        set away message of c to &quot;&quot;
+      end repeat
+    end repeat
+  end tell
+end if
+</code></pre></noscript></div>
+</p>
+]]></content>
+  </entry>
+  
+</feed>

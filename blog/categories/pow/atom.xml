@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: pow | mojinations]]></title>
+  <link href="http://mkb.github.com/blog/categories/pow/atom.xml" rel="self"/>
+  <link href="http://mkb.github.com/"/>
+  <updated>2012-06-25T18:48:12-07:00</updated>
+  <id>http://mkb.github.com/</id>
+  <author>
+    <name><![CDATA[mkb]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Color scheme for Multitail and Pow logs]]></title>
+    <link href="http://mkb.github.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs/"/>
+    <updated>2011-06-28T23:40:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs</id>
+    <content type="html"><![CDATA[<p>I recently discovered <a href="http://www.vanheusden.com/multitail/">Multitail</a>
+and it's my new favorite utility.  The settings below
+will give nice syntax coloring when viewing <a href="http://pow.cx">Pow's</a> logs.</p>
+
+<p><div><script src='https://gist.github.com/1050659.js?file='></script>
+<noscript><pre><code># % cd ~/Library/Logs/Pow/apps
+# % multitail --config &lt;some path&gt;/multitail.conf  -CS pow app1.log app2.log ...
+
+colorscheme:pow:
+cs_re:blue::
+cs_re:cyan:^\[[^]]*]
+cs_re:red:ERROR
+cs_re:yellow:WARNING
+cs_re:green:NOTICE
+cs_re:magenta:DEBUG
+cs_re:magenta:VERBOSE
+cs_re_s:red,black,underline:WARNING ([A-Z].*)
+cs_re_s:white,black,underline:WARNING  ((.*):[0-9]+:in `(.*)')
+</code></pre></noscript></div>
+</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ruby | mojinations]]></title>
+  <link href="http://mkb.github.com/blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://mkb.github.com/"/>
+  <updated>2012-06-25T18:48:12-07:00</updated>
+  <id>http://mkb.github.com/</id>
+  <author>
+    <name><![CDATA[mkb]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Color scheme for Multitail and Pow logs]]></title>
+    <link href="http://mkb.github.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs/"/>
+    <updated>2011-06-28T23:40:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/06/28/color-scheme-for-multitail-and-pow-logs</id>
+    <content type="html"><![CDATA[<p>I recently discovered <a href="http://www.vanheusden.com/multitail/">Multitail</a>
+and it's my new favorite utility.  The settings below
+will give nice syntax coloring when viewing <a href="http://pow.cx">Pow's</a> logs.</p>
+
+<p><div><script src='https://gist.github.com/1050659.js?file='></script>
+<noscript><pre><code># % cd ~/Library/Logs/Pow/apps
+# % multitail --config &lt;some path&gt;/multitail.conf  -CS pow app1.log app2.log ...
+
+colorscheme:pow:
+cs_re:blue::
+cs_re:cyan:^\[[^]]*]
+cs_re:red:ERROR
+cs_re:yellow:WARNING
+cs_re:green:NOTICE
+cs_re:magenta:DEBUG
+cs_re:magenta:VERBOSE
+cs_re_s:red,black,underline:WARNING ([A-Z].*)
+cs_re_s:white,black,underline:WARNING  ((.*):[0-9]+:in `(.*)')
+</code></pre></noscript></div>
+</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Prevent an infinite loop in Autotest by ignoring volatile files]]></title>
+    <link href="http://mkb.github.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files/"/>
+    <updated>2011-06-22T23:20:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files</id>
+    <content type="html"><![CDATA[<p><div><script src='https://gist.github.com/1040784.js?file='></script>
+<noscript><pre><code>Autotest.add_hook :initialize do |at|
+  # Prevent infinite loops by ignoring volatile files
+  %w{.git vendordb log tmp .DS_store Gemfile.lock}.each do |exception|
+    at.add_exception(exception)
+  end
+end
+</code></pre></noscript></div>
+</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using an unreleased gem version with Bundler]]></title>
+    <link href="http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
+    <updated>2011-05-06T23:06:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
+    <content type="html"><![CDATA[<h2>TL;DR</h2>
+
+<p>Do this:</p>
+
+<p>``` ruby</p>
+
+<pre><code>gem 'nokogiri'
+gem 'w3c_validators', "1.1.1", :git =&gt; 'git://github.com/alexdunae/w3c_validators.git'
+</code></pre>
+
+<p>```</p>
+
+<!--more-->
+
+
+<h2>Why?</h2>
+
+<p>After experiencing trouble with the w3c_validators gem, I discovered that the problem was a <a href="https://github.com/alexdunae/w3c_validators/issues/3">known bug</a>.  A fix has been committed, but not yet released in gem form.  I could have gone with an older version of the gem, but instead tweaked my Gemfile (ie, Bundler) to use the latest and greatest code.</p>
+
+<p>I added a :git argument to my Gemfile, instructing bundler to grab the w3c_validators gem straight from the GitHub repo, bypassing rubygems.org.</p>
+
+<p>``` ruby</p>
+
+<pre><code>gem 'w3c_validators', :git =&gt; 'git://github.com/alexdunae/w3c_validators.git'
+</code></pre>
+
+<p>```</p>
+
+<p>This turned out not to work:</p>
+
+<pre><code>Could not find gem 'w3c_validators (&gt;= 0, runtime)' in 
+git://github.com/alexdunae/w3c_validators.git (at master).
+Source does not contain any versions of 'w3c_validators (&gt;= 0, runtime)'
+</code></pre>
+
+<p>The code was present, but the latest revision lacks a gemspec.  To work around this, Bundler needs to know what version number to use for the code it pulls down:</p>
+
+<p>``` ruby</p>
+
+<pre><code>gem 'w3c_validators', "1.1.1", :git =&gt; 'git://github.com/alexdunae/w3c_validators.git'
+</code></pre>
+
+<p>```</p>
+
+<p>KABLAM.  Still not quite right.  Without a gemspec, Bundler has no way of knowing that w3c_validators depends on nokogiri, so we must state the dependency explicitly:</p>
+
+<p>``` ruby</p>
+
+<pre><code>gem 'nokogiri'
+gem 'w3c_validators', "1.1.1", :git =&gt; 'git://github.com/alexdunae/w3c_validators.git'
+</code></pre>
+
+<p>```</p>
+
+<p>And then there was much rejoicing throughout the land.</p>
+
+<h2>RTFM</h2>
+
+<p><a href="http://gembundler.com/git.html">http://gembundler.com/git.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using an unreleased gem version with Bundler]]></title>
+    <link href="http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler/"/>
+    <updated>2011-05-06T23:06:00-07:00</updated>
+    <id>http://mkb.github.com/blog/2011/05/06/using-an-unreleased-gem-version-with-bundler</id>
+    <content type="html"><![CDATA[<h2>TL;DR</h2>
+
+<p>Do this:</p>
+
+<p>``` ruby</p>
+
+<pre><code>gem 'nokogiri'
+gem 'w3c_validators', "1.1.1", :git =&gt; 'git://github.com/alexdunae/w3c_validators.git'
+</code></pre>
+
+<p>```</p>
+
+<!--more-->
+
+
+<h2>Why?</h2>
+
+<p>After experiencing trouble with the w3c_validators gem, I discovered that the problem was a <a href="https://github.com/alexdunae/w3c_validators/issues/3">known bug</a>.  A fix has been committed, but not yet released in gem form.  I could have gone with an older version of the gem, but instead tweaked my Gemfile (ie, Bundler) to use the latest and greatest code.</p>
+
+<p>I added a :git argument to my Gemfile, instructing bundler to grab the w3c_validators gem straight from the GitHub repo, bypassing rubygems.org.</p>
+
+<p>``` ruby</p>
+
+<pre><code>gem 'w3c_validators', :git =&gt; 'git://github.com/alexdunae/w3c_validators.git'
+</code></pre>
+
+<p>```</p>
+
+<p>This turned out not to work:</p>
+
+<pre><code>Could not find gem 'w3c_validators (&gt;= 0, runtime)' in 
+git://github.com/alexdunae/w3c_validators.git (at master).
+Source does not contain any versions of 'w3c_validators (&gt;= 0, runtime)'
+</code></pre>
+
+<p>The code was present, but the latest revision lacks a gemspec.  To work around this, Bundler needs to know what version number to use for the code it pulls down:</p>
+
+<p>``` ruby</p>
+
+<pre><code>gem 'w3c_validators', "1.1.1", :git =&gt; 'git://github.com/alexdunae/w3c_validators.git'
+</code></pre>
+
+<p>```</p>
+
+<p>KABLAM.  Still not quite right.  Without a gemspec, Bundler has no way of knowing that w3c_validators depends on nokogiri, so we must state the dependency explicitly:</p>
+
+<p>``` ruby</p>
+
+<pre><code>gem 'nokogiri'
+gem 'w3c_validators', "1.1.1", :git =&gt; 'git://github.com/alexdunae/w3c_validators.git'
+</code></pre>
+
+<p>```</p>
+
+<p>And then there was much rejoicing throughout the land.</p>
+
+<h2>RTFM</h2>
+
+<p><a href="http://gembundler.com/git.html">http://gembundler.com/git.html</a></p>
+]]></content>
+  </entry>
+  
+</feed>
