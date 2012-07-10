@@ -9,7 +9,8 @@
   <meta name="author" content="mkb">
 
   
-  <meta name="description" content=" ">
+  <meta name="description" content="Suppose your company has a private gem repository for your internal rubygems.
+The Gemfile for one of your internal projects might look like this: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +77,76 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/09/keeping-private-repo-passwords-out-of-your-gemfile/">Keeping Private Repo Passwords Out of Your Gemfile</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-09T11:25:00-07:00" pubdate data-updated="true">Jul 9<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Suppose your company has a private gem repository for your internal rubygems.
+The Gemfile for one of your internal projects might look like this:</p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">source</span> <span class="ss">:rubygems</span>
+</span><span class='line'><span class="n">source</span> <span class="s1">&#39;http://dhh:wizard@gems.mycorp.us/&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;sinatra&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;haml&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;awesome_secret_gem&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;sooper_s3kr1t&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can freely access both public and private gems.  This arrangement
+works nicely but the login to your repository is now checked into version
+control.  That&#8217;s a no-no, right?  The whole idea is to keep your internal gems
+private but you&#8217;ve made it easier to accidentally share them with the world.</p>
+
+<p>So long as you don&#8217;t need to check your Gemfile.lock into source control as
+well, there&#8217;s a straightforward way to get that private repo information
+out of your Gemfile.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/07/09/keeping-private-repo-passwords-out-of-your-gemfile/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -470,52 +541,6 @@ cs_re_s:white,black,underline:WARNING  ((.*):[0-9]+:in `(.*)')
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files/">Prevent an Infinite Loop in Autotest by Ignoring Volatile Files</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-22T23:20:00-07:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div><script src='https://gist.github.com/1040784.js?file='></script>
-<noscript><pre><code>Autotest.add_hook :initialize do |at|
-  # Prevent infinite loops by ignoring volatile files
-  %w{.git vendordb log tmp .DS_store Gemfile.lock}.each do |exception|
-    at.add_exception(exception)
-  end
-end
-</code></pre></noscript></div>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -531,6 +556,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/09/keeping-private-repo-passwords-out-of-your-gemfile/">Keeping private repo passwords out of your Gemfile</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/02/27/node-dot-js-is-badass-rock-star-tech/">Node.js is badass rock star tech</a>
       </li>
     
@@ -544,10 +573,6 @@ end
     
       <li class="post">
         <a href="/blog/2011/12/04/twas-ever-thus/">&#8216;Twas ever thus</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/11/09/set-im-status-from-panobar-song/">Set IM status from Panobar song</a>
       </li>
     
   </ul>
@@ -586,6 +611,19 @@ end
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'mojinations';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 

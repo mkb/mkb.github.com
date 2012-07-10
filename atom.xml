@@ -4,7 +4,7 @@
   <title><![CDATA[mojinations]]></title>
   <link href="http://mojinations.com/atom.xml" rel="self"/>
   <link href="http://mojinations.com/"/>
-  <updated>2012-06-25T19:19:09-07:00</updated>
+  <updated>2012-07-09T18:17:38-07:00</updated>
   <id>http://mojinations.com/</id>
   <author>
     <name><![CDATA[mkb]]></name>
@@ -12,6 +12,150 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Keeping private repo passwords out of your Gemfile]]></title>
+    <link href="http://mojinations.com/blog/2012/07/09/keeping-private-repo-passwords-out-of-your-gemfile/"/>
+    <updated>2012-07-09T11:25:00-07:00</updated>
+    <id>http://mojinations.com/blog/2012/07/09/keeping-private-repo-passwords-out-of-your-gemfile</id>
+    <content type="html"><![CDATA[<p>Suppose your company has a private gem repository for your internal rubygems.
+The Gemfile for one of your internal projects might look like this:</p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">source</span> <span class="ss">:rubygems</span>
+</span><span class='line'><span class="n">source</span> <span class="s1">&#39;http://dhh:wizard@gems.mycorp.us/&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;sinatra&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;haml&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;awesome_secret_gem&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;sooper_s3kr1t&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can freely access both public and private gems.  This arrangement
+works nicely but the login to your repository is now checked into version
+control.  That&#8217;s a no-no, right?  The whole idea is to keep your internal gems
+private but you&#8217;ve made it easier to accidentally share them with the world.</p>
+
+<p>So long as you don&#8217;t need to check your Gemfile.lock into source control as
+well, there&#8217;s a straightforward way to get that private repo information
+out of your Gemfile.</p>
+
+<!--more-->
+
+
+<h2>Ruby to the rescue</h2>
+
+<p>Fortunately for us, Gemfiles are just Ruby code.  Rather than hard coding the
+login to our private repository, we can grab it some other way.  Environment
+variables are an obvious choice:</p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">source</span> <span class="ss">:rubygems</span>
+</span><span class='line'><span class="n">source</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;PRIVATE_REPO_URL&#39;</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;sinatra&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;haml&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;awesome_secret_gem&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;sooper_s3kr1t&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Environment variables work, but they aren&#8217;t ideal.  Passing one or two
+parameters around via the environment can be really handy, but the approach
+does not scale well.  As environment variables proliferate, life gets messy.</p>
+
+<p>If you&#8217;re like me and you keep your dotfiles under source control, then moving
+the pivate repo details into an environment varable just moves the problem to
+a different codebase without solving it.  Worse still, environment variables
+are passed all over the place which provides even more opportunity to leak
+your secrets.  Not so good.</p>
+
+<h2>Bundler badassery</h2>
+
+<p>Bundler&#8217;s built-in configuration mechanism has us covered.  You may already
+have a Bundler config in your home directory.  Mine looks like this:</p>
+
+<figure class='code'><figcaption><span>~/.bundle/config</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="l-Scalar-Plain">BUNDLE_PATH</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">vendor/bundle</span>
+</span><span class='line'><span class="l-Scalar-Plain">BUNDLE_DISABLE_SHARED_GEMS</span><span class="p-Indicator">:</span> <span class="s">&#39;1&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Let&#8217;s add our private repo to the config:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>% bundle config private_gem_server <span class="s1">&#39;http://dhh:wizard@gems.mycorp.us/&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now the Bundler config looks like this:</p>
+
+<figure class='code'><figcaption><span>~/.bundle/config</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="l-Scalar-Plain">BUNDLE_PATH</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">vendor/bundle</span>
+</span><span class='line'><span class="l-Scalar-Plain">BUNDLE_DISABLE_SHARED_GEMS</span><span class="p-Indicator">:</span> <span class="s">&#39;1&#39;</span>
+</span><span class='line'><span class="l-Scalar-Plain">BUNDLE_PRIVATE_GEM_SERVER</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">http://dhh:wizard@gems.mycorp.us/</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Tying it all together</h2>
+
+<p>We use Bundler.settings to access the newly added repo URL:</p>
+
+<figure class='code'><figcaption><span>Gemfile</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">source</span> <span class="ss">:rubygems</span>
+</span><span class='line'><span class="n">source</span> <span class="no">Bundler</span><span class="o">.</span><span class="n">settings</span><span class="o">[</span><span class="s1">&#39;private_gem_server&#39;</span><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;sinatra&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;haml&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;awesome_secret_gem&#39;</span>
+</span><span class='line'><span class="n">gem</span> <span class="s1">&#39;sooper_s3kr1t&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Voilà!</p>
+
+<h2>The bad news</h2>
+
+<p>As I mentioned at the outset, this does not work if you also need to check
+your Gemfile.lock into source control&#8211; or rather, it still works, but there
+is little point.  Bundler sees fit to add the private repo URL to
+Gemfile.lock.  So very  sad.</p>
+
+<p>When I find a good workaround, I&#8217;ll let you know.  If you know of one, please share!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Node.js is badass rock star tech]]></title>

@@ -9,7 +9,7 @@
   <meta name="author" content="mkb">
 
   
-  <meta name="description" content="tell application &quot;System Events&quot; to if exists process &quot;Colloquy&quot; then tell application &quot;Colloquy&quot; set aC to every &hellip;">
+  <meta name="description" content="Autotest.add_hook :initialize do |at| # Prevent infinite loops by ignoring volatile files %w{.git vendordb log tmp .DS_store Gemfile.lock}.each do | &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +76,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/22/prevent-an-infinite-loop-in-autotest-by-ignoring-volatile-files/">Prevent an Infinite Loop in Autotest by Ignoring Volatile Files</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-22T23:20:00-07:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div><script src='https://gist.github.com/1040784.js?file='></script>
+<noscript><pre><code>Autotest.add_hook :initialize do |at|
+  # Prevent infinite loops by ignoring volatile files
+  %w{.git vendordb log tmp .DS_store Gemfile.lock}.each do |exception|
+    at.add_exception(exception)
+  end
+end
+</code></pre></noscript></div>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -241,6 +287,10 @@ end if
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/07/09/keeping-private-repo-passwords-out-of-your-gemfile/">Keeping private repo passwords out of your Gemfile</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/02/27/node-dot-js-is-badass-rock-star-tech/">Node.js is badass rock star tech</a>
       </li>
     
@@ -254,10 +304,6 @@ end if
     
       <li class="post">
         <a href="/blog/2011/12/04/twas-ever-thus/">&#8216;Twas ever thus</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/11/09/set-im-status-from-panobar-song/">Set IM status from Panobar song</a>
       </li>
     
   </ul>
@@ -296,6 +342,19 @@ end if
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'mojinations';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 
